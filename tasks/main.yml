@@ -1,24 +1,23 @@
 ---
 # tasks file for lighthouse-role
-tasks:
-  - name: Get light distrib
-    become: true
-    git:
-      repo: "{{ light_repo }}"
-      version: master
-      dest: "{{ light_path }}"
-  - name: Create light config
-    become: true
-    template:
-      src: nginx.j2
-      dest: /etc/nginx/nginx.conf
-      mode: "0644"
-    notify: Restart nginx service
-  - name: Flush handlers
-    meta: flush_handlers
-  - name: FIREWALL | Add Rules
-    changed_when: false
-    become: true
-    shell: |
-      firewall-cmd --permanent --add-service=http
-      firewall-cmd --reload
+- name: Get light distrib
+  become: true
+  git:
+    repo: "{{ light_repo }}"
+    version: master
+    dest: "{{ light_path }}"
+- name: Create light config
+  become: true
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/nginx.conf
+    mode: "0644"
+  notify: Restart nginx service
+- name: Flush handlers
+  meta: flush_handlers
+- name: FIREWALL | Add Rules
+  changed_when: false
+  become: true
+  shell: |
+    firewall-cmd --permanent --add-service=http
+    firewall-cmd --reload
