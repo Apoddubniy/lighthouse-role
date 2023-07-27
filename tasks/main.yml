@@ -1,5 +1,22 @@
 ---
 # tasks file for lighthouse-role
+- name: Install Nginx, epel, git
+  hosts: light
+  become: true
+  pre_tasks:
+    - name: Epel repos
+      ansible.builtin.yum_repository:
+        name: epel
+        description: install epel repos
+        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+        gpgcheck: true
+  tasks:
+    - name: Install soft
+      ansible.builtin.yum:
+        name:
+          - git
+          - nginx
+        state: present
 - name: Get light distrib
   become: true
   git:
